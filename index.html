@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUTOMATORR - Automated Resume System</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .required-field::after {
+            content: "*";
+            color: #EF4444;
+            margin-left: 4px;
+        }
+        
+        .error-message {
+            color: #EF4444;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        .error-message.show {
+            opacity: 1;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        .shake {
+            animation: shake 0.6s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-4xl font-bold text-center text-blue-400 mb-8">AUTOMATORR</h1>
+        <div class="max-w-3xl mx-auto bg-gray-800 p-6 rounded-lg shadow-lg">
+            <h2 class="text-2xl font-semibold mb-6 text-center">Submit Your Application</h2>
+            <p class="text-red-400 mb-4 text-center">Fields marked with a red asterisk (*) are mandatory</p>
+            
+            <div id="error-container" class="bg-red-900 text-white p-4 rounded-lg mb-6 hidden">
+                <p>Please fill out all required fields before submitting.</p>
+            </div>
+            
+            <form id="applicationForm" action="/" method="post" enctype="multipart/form-data" class="space-y-6">
+                <div>
+                    <label for="full_name" class="block mb-2 required-field">Full Name</label>
+                    <input type="text" id="full_name" name="full_name" class="w-full px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
+                    <div class="error-message">Please enter your full name</div>
+                </div>
+                
+                <div>
+                    <label for="email" class="block mb-2 required-field">Email</label>
+                    <input type="email" id="email" name="email" class="w-full px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
+                    <div class="error-message">Please enter a valid email address</div>
+                </div>
+                
+                <div>
+                    <label for="phone" class="block mb-2 required-field">Phone Number (Country Code Included)</label>
+                    <input type="tel" id="phone" name="phone" class="w-full px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
+                    <div class="error-message">Please enter your phone number with country code</div>
+                </div>
+                
+                <div>
+                    <label for="dob" class="block mb-2 required-field">Date of Birth</label>
+                    <input type="date" id="dob" name="dob" class="w-full px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
+                    <div class="error-message">Please enter your date of birth</div>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label for="country" class="block mb-2 required-field">Country</label>
+                        <input type="text" id="country" name="country" list="country-list" class="w-full px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
+                        <datalist id="country-list">
+                            <option value="United States">
+                            <option value="United Kingdom">
+                            <option value="Canada">
+                            <option value="Australia">
+                            <option value="India">
+                            <option value="Germany">
+                            <option value="France">
+                            <option value="Japan">
+                            <option value="China">
+                            <option value="Brazil">
+                            <!-- Add more countries as needed -->
+                        </datalist>
+                        <div class="error-message">Please enter your country</div>
+                    </div>
+                    
+                    <div>
+                        <label for="state" class="block mb-2 required-field">State/Province</label>
+                        <input type="text" id="state" name="state" class="w-full px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
+                        <div class="error-message">Please enter your state or province</div>
+                    </div>
+                    
+                    <div>
+                        <label for="city" class="block mb-2 required-field">City</label>
+                        <input type="text" id="city" name="city" class="w-full px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
+                        <div class="error-message">Please enter your city</div>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="experience" class="block mb-2 required-field">Relevant Previous Experience</label>
+                    <textarea id="experience" name="experience" rows="4" class="w-full px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none"></textarea>
+                    <div class="error-message">Please enter your relevant previous experience</div>
+                </div>
+                
+                <div>
+                    <label for="resume" class="block mb-2 required-field">Resume (PDF only)</label>
+                    <input type="file" id="resume" name="resume" accept=".pdf" class="w-full px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none">
+                    <div class="error-message">Please upload your resume in PDF format</div>
+                </div>
+                
+                <div>
+                    <label for="message" class="block mb-2">Message to Hiring Team (Optional)</label>
+                    <textarea id="message" name="message" rows="4" class="w-full px-4 py-2 rounded bg-gray-700 text-white border border-gray-600 focus:border-blue-500 focus:outline-none"></textarea>
+                </div>
+                
+                <div class="flex justify-center">
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition duration-300">Submit Application</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('applicationForm');
+            const errorContainer = document.getElementById('error-container');
+            
+            form.addEventListener('submit', function(e) {
+                // Prevent default form submission
+                e.preventDefault();
+                
+                // Reset previous errors
+                errorContainer.classList.add('hidden');
+                document.querySelectorAll('.error-message').forEach(el => {
+                    el.classList.remove('show');
+                });
+                document.querySelectorAll('input, select, textarea').forEach(el => {
+                    el.classList.remove('shake');
+                    el.classList.remove('border-red-500');
+                });
+                
+                // Get required fields
+                const requiredFields = [
+                    { id: 'full_name', message: 'Please enter your full name' },
+                    { id: 'email', message: 'Please enter a valid email address' },
+                    { id: 'phone', message: 'Please enter your phone number with country code' },
+                    { id: 'dob', message: 'Please enter your date of birth' },
+                    { id: 'country', message: 'Please enter your country' },
+                    { id: 'state', message: 'Please enter your state or province' },
+                    { id: 'city', message: 'Please enter your city' },
+                    { id: 'experience', message: 'Please enter your relevant previous experience' },
+                    { id: 'resume', message: 'Please upload your resume in PDF format' }
+                ];
+                
+                let hasErrors = false;
+                
+                // Validate each required field
+                requiredFields.forEach(field => {
+                    const element = document.getElementById(field.id);
+                    let isValid = true;
+                    
+                    // Check if empty
+                    if (!element.value) {
+                        isValid = false;
+                    }
+                    
+                    // Special validation for email
+                    if (field.id === 'email' && element.value) {
+                        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        if (!emailRegex.test(element.value)) {
+                            isValid = false;
+                        }
+                    }
+                    
+                    // Special validation for file input
+                    if (field.id === 'resume' && element.files.length > 0) {
+                        const file = element.files[0];
+                        if (!file.name.toLowerCase().endsWith('.pdf')) {
+                            isValid = false;
+                        }
+                    }
+                    
+                    if (!isValid) {
+                        hasErrors = true;
+                        
+                        // Show error message
+                        const errorMessage = element.nextElementSibling;
+                        errorMessage.classList.add('show');
+                        
+                        // Add shake animation and red border
+                        element.classList.add('shake');
+                        element.classList.add('border-red-500');
+                        
+                        // Remove shake animation after it completes
+                        setTimeout(() => {
+                            element.classList.remove('shake');
+                        }, 600);
+                    }
+                });
+                
+                if (hasErrors) {
+                    // Show the error container
+                    errorContainer.classList.remove('hidden');
+                    
+                    // Scroll to the top of the form
+                    window.scrollTo({
+                        top: form.offsetTop - 20,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Hide error messages after 3 seconds
+                    setTimeout(() => {
+                        document.querySelectorAll('.error-message').forEach(el => {
+                            el.classList.remove('show');
+                        });
+                        errorContainer.classList.add('hidden');
+                    }, 3000);
+                } else {
+                    // If no errors, submit the form
+                    form.submit();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
